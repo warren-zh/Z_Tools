@@ -1,0 +1,8 @@
+[package]
+name = "rust_101"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+cargo-audit = "0.21.2"
+tokio = "1.44.1"
