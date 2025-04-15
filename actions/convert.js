@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var url = convertedLink.textContent;
         if (url) {
             window.open(url, "_blank");
+            window.close();
         }
     });
 });
