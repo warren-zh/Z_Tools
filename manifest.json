@@ -1,0 +1,11 @@
+{
+  "name": "Zoom Meeting Link Convertor",
+  "description": "Convert a Zoom Meeting Link to bypass the pop up page",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "landing.html",
+    "default_icon": "icon.png"
+  }
+}
+

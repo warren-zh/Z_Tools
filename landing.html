@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Meeting Link Convertor</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+  </head>
+  <body>
+    <div id="app-container">
+      <h3>Meeting Link Convertor</h3>
+      <form id="urlForm">
+        <label for="urlInput">Enter URL:</label>
+        <input
+          type="text"
+          id="urlInput"
+          name="urlInput"
+          placeholder="https://zoom.us/j/&lt;meeting_id&gt;?pwd=&lt;password&gt;"
+        />
+        <button type="button" id="convertLinkBtn">Convert Meeting Link</button>
+      </form>
+
+      <p id="convertedLinkContainer" style="display: none;">
+        Converted Meeting Link: <span id="convertedLink"></span>
+      </p>
+
+      <button id="openLinkBtn" style="display: none;">Open Generated URL</button>
+    </div>
+    <script src="actions/convert.js"></script>
+  </body>
+</html>

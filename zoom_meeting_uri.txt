@@ -1,0 +1,6 @@
+zoommtg://{host}/join?action=join&confno={mn}&pwd={pwd}&browser=chrome
+
+
+https://dg01web.zoom.us/j/2045871001?pwd=d6U5f0F6YbYPRG33oVRn1ecvU9rH9v.1&omn=94726283392&from=addon
+
+zoommtg://dg01web.zoom.us/join?action=join&confno=2045871001&pwd=d6U5f0F6YbYPRG33oVRn1ecvU9rH9v.1&browser=chrome
