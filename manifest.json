@@ -1,5 +1,5 @@
 {
-  "name": "Zoom Meeting Link Convertor",
+  "name": "Zoom Meeting Link Converter",
   "description": "Convert a Zoom Meeting Link to bypass the pop up page",
   "version": "1.0",
   "manifest_version": 3,
