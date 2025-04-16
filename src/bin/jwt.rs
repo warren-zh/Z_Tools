@@ -2,12 +2,14 @@ extern crate base64;
 extern crate serde_json;
 extern crate chrono;
 extern crate colored;
+extern crate sha2;
 
 use std::io;
-use serde_json::Value;
+use serde_json::{Value, json};
 use chrono::{TimeZone, Utc, Duration};
 use colored::*;
 use base64::{Engine as _, alphabet, engine::{self, general_purpose}};
+use sha2::{Sha256, Digest};
 
 const CUSTOM_ENGINE: engine::GeneralPurpose =
     engine::GeneralPurpose::new(&alphabet::URL_SAFE, general_purpose::NO_PAD);
@@ -34,7 +36,8 @@ fn main() {
         println!("1. Decode JWT");
         println!("2. Decode Base64 string");
         println!("3. Encode to Base64");
-        println!("4. Exit");
+        println!("4. Encode JWT");
+        println!("5. Exit");
     
         let mut choice = String::new();
         io::stdin().read_line(&mut choice).expect("Failed to read line");
@@ -43,7 +46,8 @@ fn main() {
             "1" => decode_jwt_prompt(),
             "2" => decode_b64_prompt(),
             "3" => encode_b64_prompt(),
-            "4" => break,
+            "4" => encode_jwt_prompt(),
+            "5" => break,
             _ => println!("Invalid choice!"),
         }
     }
@@ -117,4 +121,42 @@ fn encode_b64_prompt() {
     let encoded = base64::encode(&string_to_encode);
     println!("\nBase64 Encoded String: {}", encoded.green());
     println!("\n");
+}
+
+fn encode_jwt_prompt() {
+    let mut payload_input = String::new();
+    println!("\nEnter customized payload:");
+    io::stdin().read_line(&mut payload_input).expect("Failed to read line");
+    payload_input = payload_input.trim().to_string();
+    
+    let mut payload_json: Value = serde_json::from_str(&payload_input).expect("Invalid JSON");
+
+    let now = Utc::now();
+    let exp = now + Duration::hours(1);
+    if let Some(obj) = payload_json.as_object_mut() {
+        obj.insert("iat".to_string(), json!(now.timestamp()));
+        obj.insert("exp".to_string(), json!(exp.timestamp()));
+    }
+
+    let header = json!({
+        "alg": "HS256",
+        "typ": "JWT",
+        "v": "2.0"
+    });
+
+    let header_encoded = general_purpose::URL_SAFE_NO_PAD.encode(serde_json::to_string(&header).unwrap());
+    let payload_encoded = general_purpose::URL_SAFE_NO_PAD.encode(serde_json::to_string(&payload_json).unwrap());
+
+    let secret = "fake_secret";
+    let message = format!("{}.{}", header_encoded, payload_encoded);
+
+    let mut hasher = Sha256::new();
+    hasher.update(format!("{}{}", message, secret));
+    let signature = hasher.finalize();
+    let signature_encoded = general_purpose::URL_SAFE_NO_PAD.encode(signature);
+
+    let jwt = format!("{}.{}.{}", header_encoded, payload_encoded, signature_encoded);
+
+    println!("\nGenerated JWT:\n{}", jwt.green());
+
 }
